@@ -13,6 +13,17 @@ class IrUiMenu(models.Model):
         column2="gid",
         string="Excluded Groups",
     )
+    included_group_ids = fields.Many2many(
+        comodel_name="res.groups",
+        relation="ir_ui_menu_included_group_rel",
+        column1="menu_id",
+        column2="gid",
+        string="Included Groups",
+        help=(
+            "Groups set here only have access to this menu and any other "
+            "menu to which they are assigned."
+        ),
+    )
 
     @api.model
     @tools.ormcache(
