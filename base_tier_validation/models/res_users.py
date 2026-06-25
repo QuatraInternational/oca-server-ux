@@ -7,7 +7,9 @@ from odoo import api, fields, models, modules
 class Users(models.Model):
     _inherit = "res.users"
 
-    review_ids = fields.Many2many(string="Reviews", comodel_name="tier.review")
+    review_ids = fields.Many2many(
+        string="Reviews", comodel_name="tier.review", copy=False
+    )
 
     @api.model
     def review_user_count(self):
@@ -29,7 +31,7 @@ class Users(models.Model):
             if tier_review and hasattr(Model, "can_review"):
                 records_domain = [
                     ("id", "in", tier_review.mapped("res_id")),
-                    ("rejected", "=", False),
+                    ("validation_status", "!=", "rejected"),
                     ("can_review", "=", True),
                 ]
                 records = (
